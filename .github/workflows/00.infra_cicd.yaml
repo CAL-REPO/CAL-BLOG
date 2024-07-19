@@ -3,10 +3,11 @@ name: CAL-BLOG Infrastructure CI/CD
 on:
   push:
     branches:
-      - calblog-infra
+      - 'calblog-infra'
 
 jobs:
-  set-secret:
+  set-directory:
+    name: 'Set Directory'
     runs-on: ubuntu-latest
 
     steps:
