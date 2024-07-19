@@ -1,34 +1,35 @@
-name: Set Secrets
+name: CAL-BLOG Infrastructure CI/CD
 
 on:
   push:
     branches:
-      - master
+      - calblog-infra
 
 jobs:
   set-secret:
     runs-on: ubuntu-latest
 
     steps:
+
+      - name: Checkout calblog-cicd branch into a separate directory
+        uses: actions/checkout@v3
+        with:
+          ref: calblog-cicd
+          path: calblog-cicd
+      
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ref: master
-          path: master
+          ref: calblog-infra
+          path: calblog-infra
 
       - name: Install GitHub CLI
         run: sudo apt-get install gh -y
 
-      # - name: Read config and set environment variables
-      #   id: read-config
-      #   run: |
-      #     chmod +x master/1.WORKFLOWS_SCRIPT/read_config.sh
-      #     source master/1.WORKFLOWS_SCRIPT/read_config.sh master/config.cfg
-
       # - name: Set github repository from secret to github action environment variable
       #   working-directory: master/1.WORKFLOWS_SCRIPT
       #   env:
-      #     GIT_PROFILE_CSV_DATA: ${{ secrets.CAL_SC_GIT_REPO_PROFILE_ENCODED }}
+      #     GIT_PROFILE_CSV_DATA: ${{ secrets.CAL_SC_GIT_REPO_PROFILE_ENCODED }}cd 
       #     GIT_MASTER_USER_NAME: ${{ env.GIT_MASTER_USER_NAME }}
       #     GIT_REPO_NAME: ${{ env.GIT_REPO_NAME }}
       #     GH_TOKEN: ${{ secrets.CAL_SC_GIT_MASTER_USER_TOKEN }}

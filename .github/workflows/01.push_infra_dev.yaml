@@ -1,39 +1,46 @@
-# # .github/workflows/01.push_infra_dev.yaml
+# .github/workflows/01.push_infra_dev.yaml
 
-# name: Push Infra Dev
+name: Terraform CI/CD for Infrastructure
 
-# on:
-#   push:
-#     paths:
-#       - '1.INFRA/1.DEV/**'
-#   workflow_dispatch:
+on:
+  push:
+    branches:
+      - main           # Run on pushes to the main branch
+  pull_request:
+    branches:
+      - main           # Run on pull requests targeting the main branch
 
-# jobs:
-#   push_infra_dev:
-#     runs-on: ubuntu-latest
+jobs:
+  terraform:
+    name: 'Terraform CI/CD'
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v3
-#         with:
-#           fetch-depth: 0
+    defaults:
+      run:
+        working-directory: 1.INFRA/4.TERRAFORM/01.SEOUL
 
-#       - name: Filter changes for ./1.INFRA/1.DEV
-#         run: |
-#           mkdir -p filtered_changes
-#           cp -R 1.INFRA/1.DEV/* filtered_changes/
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Filter changes for ./1.INFRA/1.DEV
+        run: |
+          mkdir -p filtered_changes
+          cp -R 1.INFRA/1.DEV/* filtered_changes/
       
-#       - name: Initialize and configure Git
-#         run: |
-#           git config --global user.name 'github-actions[bot]'
-#           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-#           git remote add target_repo https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-#           git fetch target_repo
-#           git checkout -b dev-infra target_repo/dev-infra || git checkout --orphan dev-infra
+      - name: Initialize and configure Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git remote add target_repo https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git fetch target_repo
+          git checkout -b dev-infra target_repo/dev-infra || git checkout --orphan dev-infra
 
-#       - name: Push changes to dev-infra branch
-#         run: |
-#           rsync -a --delete filtered_changes/ .
-#           git add .
-#           git commit -m "Update ./1.INFRA/1.DEV"
-#           git push target_repo dev-infra
+      - name: Push changes to dev-infra branch
+        run: |
+          rsync -a --delete filtered_changes/ .
+          git add .
+          git commit -m "Update ./1.INFRA/1.DEV"
+          git push target_repo dev-infra
