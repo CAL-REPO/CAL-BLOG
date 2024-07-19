@@ -3,22 +3,21 @@ name: CAL-BLOG Infrastructure CI/CD
 on:
   push:
     branches:
-      - 'calblog-infra'
+      - calblog-infra
 
 jobs:
   set-directory:
-    name: 'Set Directory'
+    name: Set Directory
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout calblog-cicd branch into a separate directory
         uses: actions/checkout@v3
         with:
           ref: calblog-cicd
           path: calblog-cicd
       
-      - name: Checkout repository
+      - name: Checkout calblog-infra branch into a separate directory
         uses: actions/checkout@v3
         with:
           ref: calblog-infra
