@@ -1,5 +1,4 @@
 # REG1
-
 locals {
     AWS_REG1_VPC1_INSs = [
         {
