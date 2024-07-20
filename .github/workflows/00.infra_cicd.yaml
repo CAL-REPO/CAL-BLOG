@@ -3,7 +3,7 @@ name: CAL-BLOG Infrastructure CI/CD
 on:
   push:
     branches:
-      - calblog-infra
+      - calblog-cicd
 
 jobs:
   set-directory:
@@ -11,17 +11,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout calblog-cicd branch into a separate directory
-        uses: actions/checkout@v3
-        with:
-          ref: calblog-cicd
-          path: calblog-cicd
-      
       - name: Checkout calblog-infra branch into a separate directory
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: calblog-infra
           path: calblog-infra
+
+      - name: Checkout calblog-cicd branch into a separate directory
+        uses: actions/checkout@v4
+        with:
+          ref: calblog-cicd
+          path: calblog-cicd
 
       - name: Install GitHub CLI
         run: sudo apt-get install gh -y
